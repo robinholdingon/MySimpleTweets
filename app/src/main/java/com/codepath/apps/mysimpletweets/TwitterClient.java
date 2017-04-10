@@ -27,16 +27,27 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_KEY = "YIWae3JqvDijQbbyvprGYD7yE";       // Change this
 	public static final String REST_CONSUMER_SECRET = "IlspJroJCepsOu7LBFujud9zHcg4CB2FTQllmwN0jJReUIO6tc"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
+	public static final int initialFetch = 25;
 
 	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
 	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+		getHomeTimeline(handler, 1, -1, initialFetch);
+	}
+
+	public void getHomeTimeline(AsyncHttpResponseHandler handler, int sinceId, long maxId) {
+		getHomeTimeline(handler, sinceId, maxId, initialFetch);
+	}
+	public void getHomeTimeline(AsyncHttpResponseHandler handler, int sinceId, long maxId, int fetchCount) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		RequestParams params = new RequestParams();
-		params.put("count", 25);
-		params.put("since_id", 1);
+		params.put("count", fetchCount);
+		params.put("since_id", sinceId);
+		if (maxId > 0) {
+			params.put("max_id", maxId);
+		}
 		client.get(apiUrl, params, handler);
 	}
 

@@ -3,6 +3,7 @@ package com.codepath.apps.mysimpletweets.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
  * Created by jian_feng on 4/9/17.
  */
 
+@Parcel
 public class Tweet {
     public static String BODY_KEY = "text";
     public static String ID_KEY = "id";
@@ -34,6 +36,13 @@ public class Tweet {
         }
 
         return tweet;
+    }
+
+    public Tweet () {}
+
+    public Tweet(String body) {
+        this.body = body;
+
     }
 
     public static ArrayList<Tweet> fromJsonArray(JSONArray jsonArray) {

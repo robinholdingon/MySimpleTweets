@@ -1,13 +1,19 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.codepath.apps.mysimpletweets.listeners.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.models.User;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -24,6 +30,8 @@ public class TimelineActivity extends AppCompatActivity {
     private TweetAdapter adapter;
     private RecyclerView lvTweets;
     private EndlessRecyclerViewScrollListener scrollListener;
+
+    private static final int NEW_TWEET_ACTIVITY_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,5 +78,63 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("DEBUG", errorResponse.toString());
             }
         }, sinceId, maxId);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_timeline_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.miCompose) {
+            Intent i = new Intent(this, NewTweetActivity.class);
+            // add parameters
+
+            this.startActivityForResult(i, NEW_TWEET_ACTIVITY_CODE);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case NEW_TWEET_ACTIVITY_CODE:
+                // in this case, we've called FetchExperimentConfigActivity
+                // after sign in with email / password under EMAIL_EXIST_WHEN_SOCIAL_SIGNUP situation
+                // so need to call googleSmartLockController the same as after normal email signin
+                if (resultCode == Activity.RESULT_OK) {
+                    String body = data.getStringExtra(NewTweetActivity.TWEET_BODY_KEY);
+                    client.createNewTweet(new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Log.d("DEBUG", responseBody.toString());
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.d("DEBUG", error.toString());
+                        }
+                    }, body);
+
+                    Tweet newTweet = new Tweet();
+                    newTweet.user = User.getCurrentUser();
+                    newTweet.body = body;
+
+                    tweets.add(0, newTweet);
+                    adapter.notifyItemInserted(0);
+                    lvTweets.scrollToPosition(0);
+                }
+                break;
+        }
     }
 }

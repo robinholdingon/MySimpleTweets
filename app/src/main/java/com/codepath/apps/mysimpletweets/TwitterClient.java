@@ -45,6 +45,7 @@ public class TwitterClient extends OAuthBaseClient {
 		RequestParams params = new RequestParams();
 		params.put("count", fetchCount);
 		params.put("since_id", sinceId);
+		params.put("include_entities", true);
 		if (maxId > 0) {
 			params.put("max_id", maxId);
 		}

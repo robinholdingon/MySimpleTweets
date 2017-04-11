@@ -17,12 +17,14 @@ public class Tweet {
     public static String ID_KEY = "id";
     public static String CREATE_AT_KEY = "created_at";
     public static String USER_KEY = "user";
+    public static String MEDIA_URL_KEY = "media_url";
 
     public String body;
     public long id;
 
     public User user;
     public String createAt;
+    public String imageUrl;
 
     public static Tweet fromJson(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
@@ -31,11 +33,21 @@ public class Tweet {
             tweet.id = jsonObject.getLong(ID_KEY);
             tweet.createAt = jsonObject.getString(CREATE_AT_KEY);
             tweet.user = User.fromJson(jsonObject.getJSONObject(USER_KEY));
+            try {
+                String mediaUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
+                tweet.imageUrl = mediaUrl;
+            } catch (Exception e) {
+
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return tweet;
+    }
+
+    public static boolean isImage(String mediaName) {
+        return mediaName.contains(".jpg") || mediaName.contains(".jpeg") || mediaName.contains(".png");
     }
 
     public Tweet () {}
@@ -72,5 +84,9 @@ public class Tweet {
 
     public User getUser() {
         return user;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

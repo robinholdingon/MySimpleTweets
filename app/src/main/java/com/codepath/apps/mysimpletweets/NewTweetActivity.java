@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class NewTweetActivity extends AppCompatActivity {
 
@@ -43,7 +44,8 @@ public class NewTweetActivity extends AppCompatActivity {
         User user = User.getCurrentUser();
         tvUserName.setText(user.name);
         tvUserScreenName.setText(user.screenName);
-        Picasso.with(this).load(user.profileImageUrl).into(ivProfile);
+        Picasso.with(this).load(user.profileImageUrl)
+                .transform(new RoundedCornersTransformation(20,0)).into(ivProfile);
         count.setText(Integer.toString(charCountLimit));
 
         cancel.setOnClickListener(new View.OnClickListener() {

@@ -43,7 +43,8 @@
         <activity
             android:name=".TimelineActivity"
             android:label="@string/title_activity_timeline" />
-        <activity android:name=".NewTweetActivity"></activity>
+        <activity android:name=".NewTweetActivity" />
+        <activity android:name=".TweetDetailActivity"></activity>
     </application>
 
 </manifest>

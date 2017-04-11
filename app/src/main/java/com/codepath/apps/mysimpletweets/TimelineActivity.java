@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.codepath.apps.mysimpletweets.listeners.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -131,17 +132,18 @@ public class TimelineActivity extends AppCompatActivity {
                 // so need to call googleSmartLockController the same as after normal email signin
                 if (resultCode == Activity.RESULT_OK) {
                     String body = data.getStringExtra(NewTweetActivity.TWEET_BODY_KEY);
-//                    client.createNewTweet(new AsyncHttpResponseHandler() {
-//                        @Override
-//                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                            Log.d("DEBUG", responseBody.toString());
-//                        }
-//
-//                        @Override
-//                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//                            Log.d("DEBUG", error.toString());
-//                        }
-//                    }, body);
+                    client.createNewTweet(new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Log.d("DEBUG", responseBody.toString());
+                            lvTweets.scrollToPosition(0);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Log.d("DEBUG", error.toString());
+                        }
+                    }, body);
 
                     Tweet newTweet = new Tweet();
                     newTweet.user = User.getCurrentUser();

@@ -1,6 +1,9 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.utils.TimeUtils;
 import com.squareup.picasso.Picasso;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -29,9 +34,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         public TextView tvTime;
         public TextView tvUserScreenName;
         public ImageView ivTweetImage;
+        public View itemView;
 
         public TweetViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
@@ -41,6 +48,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         }
     }
 
+    public static final String TWEET_DETAIL_KEY = "tweet_detail";
     private List<Tweet> mTweets;
     private Context mContext;
 
@@ -63,7 +71,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     }
 
     @Override
-    public void onBindViewHolder(TweetViewHolder holder, int position) {
+    public void onBindViewHolder(final TweetViewHolder holder, final int position) {
         Tweet tweet = mTweets.get(position);
         String tweetImage = tweet.getImageUrl();
 
@@ -79,10 +87,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
         if ( !TextUtils.isEmpty(tweet.getImageUrl()) ) {
             Picasso.with(getContext()).load(tweet.getImageUrl())
-                    .transform(new RoundedCornersTransformation(10,0))
-                    .resize(ivTweetImage.getWidth(), 600).into(ivTweetImage);
+                    .transform(new RoundedCornersTransformation(20,0)).into(ivTweetImage);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), TweetDetailActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((Activity)getContext(), (View) (holder.ivTweetImage), "tweet_image");
 
+                i.putExtra(TWEET_DETAIL_KEY, Parcels.wrap(mTweets.get(position)));
+                getContext().startActivity(i, options.toBundle());
+            }
+        });
         tvBody.setText(tweet.getBody());
         tvUserScreenName.setText(tweet.getUser().screenName);
         tvTime.setText(TimeUtils.getRelativeTimeAgo(tweet.getCreateAt()));

@@ -85,6 +85,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         ivProfileImage.setImageResource(0);
         Picasso.with(getContext()).load(tweet.getUser().profileImageUrl).transform(new RoundedCornersTransformation(10,0)).fit().into(ivProfileImage);
 
+        ivTweetImage.setImageResource(0);
         if ( !TextUtils.isEmpty(tweet.getImageUrl()) ) {
             Picasso.with(getContext()).load(tweet.getImageUrl())
                     .transform(new RoundedCornersTransformation(20,0)).into(ivTweetImage);

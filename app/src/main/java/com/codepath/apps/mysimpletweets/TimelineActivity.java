@@ -84,6 +84,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("DEBUG", response.toString());
                 if (reload) {
                     tweets.clear();
+                    adapter.clear();
                 }
                 tweets.addAll(Tweet.fromJsonArray(response));
                 adapter.notifyDataSetChanged();

@@ -36,7 +36,7 @@ public class TweetDetailActivity extends AppCompatActivity {
 
     private void setupView(Tweet tweet) {
         tvBody.setText(tweet.getBody());
-        Picasso.with(this).load(tweet.getUser().profileImageUrl).transform(new RoundedCornersTransformation(10,0)).fit().into(ivProfileImage);
+        Picasso.with(this).load(tweet.getUser().profileImageUrl).transform(new RoundedCornersTransformation(5,0)).fit().into(ivProfileImage);
 
         if ( !TextUtils.isEmpty(tweet.getImageUrl()) ) {
             Picasso.with(this).load(tweet.getImageUrl())

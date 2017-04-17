@@ -90,7 +90,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
             Picasso.with(getContext()).load(tweet.getImageUrl())
                     .transform(new RoundedCornersTransformation(20,0)).into(ivTweetImage);
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.tvBody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), TweetDetailActivity.class);
@@ -99,6 +99,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
 
                 i.putExtra(TWEET_DETAIL_KEY, Parcels.wrap(mTweets.get(position)));
                 getContext().startActivity(i, options.toBundle());
+            }
+        });
+        holder.ivTweetImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), TweetDetailActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((Activity)getContext(), (View) (holder.ivTweetImage), "tweet_image");
+
+                i.putExtra(TWEET_DETAIL_KEY, Parcels.wrap(mTweets.get(position)));
+                getContext().startActivity(i, options.toBundle());
+            }
+        });
+        holder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                i.putExtra(ProfileActivity.USER_KEY, Parcels.wrap(mTweets.get(position).getUser()));
+                getContext().startActivity(i);
             }
         });
         tvBody.setText(tweet.getBody());

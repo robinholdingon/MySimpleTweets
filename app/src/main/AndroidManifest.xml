@@ -45,7 +45,7 @@
             android:label="@string/title_activity_timeline" />
         <activity android:name=".NewTweetActivity" />
         <activity android:name=".TweetDetailActivity" />
-        <activity android:name=".PrifileActivity"></activity>
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

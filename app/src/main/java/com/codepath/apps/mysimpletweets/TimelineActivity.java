@@ -20,6 +20,8 @@ import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.parceler.Parcels;
+
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetListListener {
@@ -126,6 +128,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     }
 
     public void onProfileView(MenuItem mi) {
-
+        Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra(ProfileActivity.USER_KEY, Parcels.wrap(User.getCurrentUser()));
+        startActivity(i);
     }
 }

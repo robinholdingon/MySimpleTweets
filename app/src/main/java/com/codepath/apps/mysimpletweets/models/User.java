@@ -22,11 +22,17 @@ public class User {
     public static String ID_KEY = "id";
     public static String PROFILE_IMAGE_URL_KEY = "profile_image_url";
     public static String SCREEN_NAME_KEY = "screen_name";
+    public static String DESCRIPTION_KEY = "description";
+    public static String FOLLOWER_COUNT_KEY = "followers_count";
+    public static String FOLLOWING_COUNT_KEY = "friends_count";
 
     public String name;
     public long id;
     public String screenName;
-    public  String profileImageUrl;
+    public String profileImageUrl;
+    public String description;
+    public int followersCount;
+    public int followingCount;
 
     private static User currentUser;
 
@@ -36,7 +42,10 @@ public class User {
             user.name = jsonObject.getString(NAME_KEY);
             user.id = jsonObject.getLong(ID_KEY);
             user.screenName = "@" + jsonObject.getString(SCREEN_NAME_KEY);
-            user.profileImageUrl =jsonObject.getString(PROFILE_IMAGE_URL_KEY);
+            user.profileImageUrl = jsonObject.getString(PROFILE_IMAGE_URL_KEY);
+            user.description = jsonObject.getString(DESCRIPTION_KEY);
+            user.followersCount = jsonObject.getInt(FOLLOWER_COUNT_KEY);
+            user.followingCount = jsonObject.getInt(FOLLOWING_COUNT_KEY);
         } catch(JSONException e) {
             e.printStackTrace();
         }
@@ -56,6 +65,9 @@ public class User {
                         currentUser.id = response.getLong("id");
                         currentUser.name = response.getString("name");
                         currentUser.screenName =  "@" + response.getString("screen_name");
+                        currentUser.description = response.getString(DESCRIPTION_KEY);
+                        currentUser.followersCount = response.getInt(FOLLOWER_COUNT_KEY);
+                        currentUser.followingCount = response.getInt(FOLLOWING_COUNT_KEY);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -69,5 +81,33 @@ public class User {
             });
         }
         return currentUser;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getFollower() {
+        return followersCount;
+    }
+
+    public int getFollowing() {
+        return followingCount;
     }
 }

@@ -16,6 +16,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class HomeTimelineFragment extends TweetsListFragment {
     public void populateTimeLine(final boolean reload, final int sinceId, long maxId) {
+        pd.show();
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -24,6 +25,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
                     clear();
                 }
                 addAll(Tweet.fromJsonArray(response));
+                pd.dismiss();
             }
 
             @Override

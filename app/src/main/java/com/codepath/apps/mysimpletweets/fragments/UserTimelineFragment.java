@@ -20,6 +20,7 @@ public class UserTimelineFragment extends TweetsListFragment {
     public static String SCREEN_NAME_KEY = "screen_name";
     @Override
     public void populateTimeLine(final boolean reload, int sinceId, long maxId) {
+        pd.show();
         client.getUserTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -28,12 +29,14 @@ public class UserTimelineFragment extends TweetsListFragment {
                     clear();
                 }
                 addAll(Tweet.fromJsonArray(response));
+                pd.dismiss();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.d("DEBUG", errorResponse.toString());
+                pd.dismiss();
             }
         }, getArguments().getString(SCREEN_NAME_KEY));
     }

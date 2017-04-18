@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
-import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -24,11 +23,11 @@ import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
-public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetListListener {
+public class TimelineActivity extends AppCompatActivity{
 
     private TwitterClient client;
     private static final int NEW_TWEET_ACTIVITY_CODE = 101;
-    private MentionsTimelineFragment homeTimelineFragment;
+    private HomeTimelineFragment homeTimelineFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +108,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return new HomeTimelineFragment();
+                homeTimelineFragment = new HomeTimelineFragment();
+                return homeTimelineFragment;
             } else if (position == 1) {
                 return new MentionsTimelineFragment();
             }

@@ -54,7 +54,8 @@
         android:paddingLeft="5dp"
         android:layout_below="@+id/tvUserName"
         android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage" />
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:textSize="10sp" />
 
     <ImageView
         android:layout_width="match_parent"

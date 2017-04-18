@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.codepath.apps.mysimpletweets.ProfileActivity;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TimelineActivity;
 import com.codepath.apps.mysimpletweets.TweetAdapter;
@@ -27,8 +29,6 @@ import java.util.List;
  */
 
 public abstract class TweetsListFragment extends Fragment{
-    public interface TweetListListener {
-    }
 
     protected TwitterClient client;
     private ArrayList<Tweet> aTweets;
@@ -37,15 +37,17 @@ public abstract class TweetsListFragment extends Fragment{
     private EndlessRecyclerViewScrollListener scrollListener;
     private SwipeRefreshLayout swipeContainer;
     private LinearLayoutManager layoutManager;
-    TweetListListener mCallback;
+    ProgressDialog pd;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof TimelineActivity) {
+        if (context instanceof TimelineActivity || context instanceof ProfileActivity) {
             try {
-                mCallback = (TweetListListener) context;
+                pd = new ProgressDialog(context);
+                pd.setCancelable(false);
+                pd.setMessage("Loading Tweets...");
             } catch (ClassCastException e) {
                 e.printStackTrace();
             }

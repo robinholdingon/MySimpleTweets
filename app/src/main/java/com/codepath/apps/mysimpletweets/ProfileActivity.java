@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +13,9 @@ import com.codepath.apps.mysimpletweets.models.User;
 
 import org.parceler.Parcels;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity{
     public static String USER_KEY = "user";
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
         User user = Parcels.unwrap(userParcelable);
 
         getSupportActionBar().setTitle(user.screenName);
+        //pd.setCancelable(false);
 
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
